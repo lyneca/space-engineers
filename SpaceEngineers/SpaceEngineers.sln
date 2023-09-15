@@ -5,6 +5,14 @@ VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Misc", "Misc\Misc.csproj", "{2DCA58EE-6C9C-416B-9A0F-C34981C325F1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventoryInfo", "..\InventoryInfo\InventoryInfo.csproj", "{26BD5811-9585-45B4-A315-B2BA6D4353E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventoryTargets", "..\InventoryTargets\InventoryTargets.csproj", "{7424C89F-B762-42CA-A0AC-847EFAACB68E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgressBar", "..\ProgressBar\ProgressBar.csproj", "{E562F704-1BF2-4D5A-9F27-DB83B7CEA67D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utilities", "Utilities", "{DC21157D-4799-43C1-A1EC-F6E1E005593D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -12,9 +20,18 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{2DCA58EE-6C9C-416B-9A0F-C34981C325F1}.Debug|x64.ActiveCfg = Debug|x64
 		{2DCA58EE-6C9C-416B-9A0F-C34981C325F1}.Debug|x64.Build.0 = Debug|x64
+		{26BD5811-9585-45B4-A315-B2BA6D4353E8}.Debug|x64.ActiveCfg = Debug|x64
+		{26BD5811-9585-45B4-A315-B2BA6D4353E8}.Debug|x64.Build.0 = Debug|x64
+		{7424C89F-B762-42CA-A0AC-847EFAACB68E}.Debug|x64.ActiveCfg = Debug|x64
+		{7424C89F-B762-42CA-A0AC-847EFAACB68E}.Debug|x64.Build.0 = Debug|x64
+		{E562F704-1BF2-4D5A-9F27-DB83B7CEA67D}.Debug|x64.ActiveCfg = Debug|x64
+		{E562F704-1BF2-4D5A-9F27-DB83B7CEA67D}.Debug|x64.Build.0 = Debug|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E562F704-1BF2-4D5A-9F27-DB83B7CEA67D} = {DC21157D-4799-43C1-A1EC-F6E1E005593D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D3B228E4-315A-4681-8B7B-397C5A80ADAC}
