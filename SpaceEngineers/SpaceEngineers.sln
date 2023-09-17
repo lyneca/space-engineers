@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgressBar", "..\ProgressB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utilities", "Utilities", "{DC21157D-4799-43C1-A1EC-F6E1E005593D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consumer", "Consumer\Consumer.csproj", "{D0DA7FF6-7D85-46F6-907C-24485367DCB7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -26,12 +28,15 @@ Global
 		{7424C89F-B762-42CA-A0AC-847EFAACB68E}.Debug|x64.Build.0 = Debug|x64
 		{E562F704-1BF2-4D5A-9F27-DB83B7CEA67D}.Debug|x64.ActiveCfg = Debug|x64
 		{E562F704-1BF2-4D5A-9F27-DB83B7CEA67D}.Debug|x64.Build.0 = Debug|x64
+		{D0DA7FF6-7D85-46F6-907C-24485367DCB7}.Debug|x64.ActiveCfg = Debug|x64
+		{D0DA7FF6-7D85-46F6-907C-24485367DCB7}.Debug|x64.Build.0 = Debug|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E562F704-1BF2-4D5A-9F27-DB83B7CEA67D} = {DC21157D-4799-43C1-A1EC-F6E1E005593D}
+		{D0DA7FF6-7D85-46F6-907C-24485367DCB7} = {DC21157D-4799-43C1-A1EC-F6E1E005593D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D3B228E4-315A-4681-8B7B-397C5A80ADAC}
