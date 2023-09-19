@@ -15,6 +15,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utilities", "Utilities", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consumer", "Consumer\Consumer.csproj", "{D0DA7FF6-7D85-46F6-907C-24485367DCB7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RefineryDemandBalancer", "RefineryDemandBalancer\RefineryDemandBalancer.csproj", "{531738AB-2C06-4716-976F-0183FFA0D67D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventoryTargetParser", "InventoryTargetParser\InventoryTargetParser.csproj", "{EF7130C7-64AB-4FF2-B446-EB820DEB98EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -30,6 +34,10 @@ Global
 		{E562F704-1BF2-4D5A-9F27-DB83B7CEA67D}.Debug|x64.Build.0 = Debug|x64
 		{D0DA7FF6-7D85-46F6-907C-24485367DCB7}.Debug|x64.ActiveCfg = Debug|x64
 		{D0DA7FF6-7D85-46F6-907C-24485367DCB7}.Debug|x64.Build.0 = Debug|x64
+		{531738AB-2C06-4716-976F-0183FFA0D67D}.Debug|x64.ActiveCfg = Debug|x64
+		{531738AB-2C06-4716-976F-0183FFA0D67D}.Debug|x64.Build.0 = Debug|x64
+		{EF7130C7-64AB-4FF2-B446-EB820DEB98EF}.Debug|x64.ActiveCfg = Debug|x64
+		{EF7130C7-64AB-4FF2-B446-EB820DEB98EF}.Debug|x64.Build.0 = Debug|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -37,6 +45,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{E562F704-1BF2-4D5A-9F27-DB83B7CEA67D} = {DC21157D-4799-43C1-A1EC-F6E1E005593D}
 		{D0DA7FF6-7D85-46F6-907C-24485367DCB7} = {DC21157D-4799-43C1-A1EC-F6E1E005593D}
+		{EF7130C7-64AB-4FF2-B446-EB820DEB98EF} = {DC21157D-4799-43C1-A1EC-F6E1E005593D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D3B228E4-315A-4681-8B7B-397C5A80ADAC}
