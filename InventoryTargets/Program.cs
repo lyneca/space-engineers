@@ -51,9 +51,14 @@ namespace IngameScript
         //
         // to learn more about ingame scripts.
 
+        InventoryTargetParser inventoryTargetParser;
+
         public Program()
         {
             Runtime.UpdateFrequency = UpdateFrequency.Update100;
+            var configBlock = GridTerminalSystem.GetBlockWithName("z.RefineryDemandBalancer");
+            inventoryTargetParser = new InventoryTargetParser(configBlock);
+            inventoryTargetParser.ParseInventoryTargets();
         }
 
         public void Main(string argument, UpdateType updateSource)
@@ -78,7 +83,7 @@ namespace IngameScript
                 }
             });
 
-            foreach (var inventoryTarget in inventoryTargets)
+            foreach (var inventoryTarget in inventoryTargetParser.InventoryTargets)
             {
                 decimal rawCount = decimal.Parse(itemCounts.ContainsKey(inventoryTarget.RawItemType)
                     ? itemCounts[inventoryTarget.RawItemType].ToString()
@@ -118,73 +123,6 @@ namespace IngameScript
                 Me.CustomData += $"{bar} [{percent.ToString("00.00")}%]\n";
             }
         }
-
-        List<InventoryTarget> inventoryTargets = new List<InventoryTarget>() {
-            new InventoryTarget() {
-                DisplayName = "Iron",
-                RawItemType = "Ore/Iron",
-                ProcessedItemType = "Ingot/Iron",
-                DesiredProcessedAmount = 100000,
-                ProcessingConversionFactor = 0.70M,
-            },
-            new InventoryTarget() {
-                DisplayName = "Silicon",
-                RawItemType = "Ore/Silicon",
-                ProcessedItemType = "Ingot/Silicon",
-                DesiredProcessedAmount = 5000,
-                ProcessingConversionFactor = 0.70M,
-            },
-            new InventoryTarget() {
-                DisplayName = "Nickel",
-                RawItemType = "Ore/Nickel",
-                ProcessedItemType = "Ingot/Nickel",
-                DesiredProcessedAmount = 5000,
-                ProcessingConversionFactor = 0.40M,
-            },
-            new InventoryTarget() {
-                DisplayName = "Cobalt",
-                RawItemType = "Ore/Cobalt",
-                ProcessedItemType = "Ingot/Cobalt",
-                DesiredProcessedAmount = 5000,
-                ProcessingConversionFactor = 0.30M,
-            },
-            new InventoryTarget() {
-                DisplayName = "Silver",
-                RawItemType = "Ore/Silver",
-                ProcessedItemType = "Ingot/Silver",
-                DesiredProcessedAmount = 5000,
-                ProcessingConversionFactor = 0.10M,
-            },
-            new InventoryTarget() {
-                DisplayName = "Gold",
-                RawItemType = "Ore/Gold",
-                ProcessedItemType = "Ingot/Gold",
-                DesiredProcessedAmount = 5000,
-                ProcessingConversionFactor = 0.01M,
-            },
-            new InventoryTarget() {
-                DisplayName = "Uranium",
-                RawItemType = "Ore/Uranium",
-                ProcessedItemType = "Ingot/Uranium",
-                DesiredProcessedAmount = 5000,
-                ProcessingConversionFactor = 0.01M,
-            },
-
-            new InventoryTarget() {
-                DisplayName = "Magnesium",
-                RawItemType = "Ore/Magnesium",
-                ProcessedItemType = "Ingot/Magnesium",
-                DesiredProcessedAmount = 5000,
-                ProcessingConversionFactor = 0.007M,
-            },
-            new InventoryTarget() {
-                DisplayName = "Platinum",
-                RawItemType = "Ore/Platinum",
-                ProcessedItemType = "Ingot/Platinum",
-                DesiredProcessedAmount = 5000,
-                ProcessingConversionFactor = 0.005M,
-            },
-        };
     }
 
     class InventoryTarget
@@ -194,6 +132,42 @@ namespace IngameScript
         public string ProcessedItemType;
         public decimal DesiredProcessedAmount;
         public decimal ProcessingConversionFactor;
+    }
+
+    class InventoryTargetParser
+    {
+        private IMyTerminalBlock ReadFromBlock { get; set; }
+
+        private List<InventoryTarget> inventoryTargets = new List<InventoryTarget>();
+
+        public List<InventoryTarget> InventoryTargets { get { return inventoryTargets; } }
+
+        public InventoryTargetParser(IMyTerminalBlock readFromBlock)
+        {
+            if (readFromBlock == null) throw new Exception("readFromBlock is null");
+            ReadFromBlock = readFromBlock;
+        }
+
+        public List<InventoryTarget> ParseInventoryTargets()
+        {
+            inventoryTargets.Clear();
+            string[] lines = ReadFromBlock.CustomData.Split('\n');
+
+            foreach (string line in lines)
+            {
+                string[] fields = line.Split(',');
+                inventoryTargets.Add(new InventoryTarget
+                {
+                    DisplayName = fields[0],
+                    RawItemType = $"Ore/{fields[0]}",
+                    ProcessedItemType = $"Ingot/{fields[0]}",
+                    ProcessingConversionFactor = Convert.ToDecimal(fields[1]),
+                    DesiredProcessedAmount = int.Parse(fields[2])
+                });
+            }
+
+            return InventoryTargets;
+        }
     }
 
 
