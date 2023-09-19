@@ -270,7 +270,17 @@ namespace IngameScript
                 Echo($"{pair.Key}: {pair.Value}");
             }
 
+            // TODO: Make whether to include connected grids an option.
+
+            // Get all refineries on this grid.
+            List<IMyRefinery> refineries = new List<IMyRefinery>();
+            GridTerminalSystem.GetBlocksOfType<IMyRefinery>(refineries);
+            // Filter to only blocks on the same grid as this programmable block.
+            // i.e. Exclude connected grids.
+            refineries = refineries.Where(refinery => refinery.CubeGrid == Me.CubeGrid).ToList();
+
             // TODO: Actually assign refining operations.
+
         }
     }
 }
