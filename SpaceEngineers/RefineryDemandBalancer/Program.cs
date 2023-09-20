@@ -1,4 +1,5 @@
-﻿using Sandbox.Game.EntityComponents;
+﻿using EmptyKeys.UserInterface.Generated.DataTemplatesStoreBlock_Bindings;
+using Sandbox.Game.EntityComponents;
 using Sandbox.ModAPI.Ingame;
 using Sandbox.ModAPI.Interfaces;
 using SpaceEngineers.Game.ModAPI.Ingame;
@@ -24,16 +25,6 @@ namespace IngameScript
     partial class Program : MyGridProgram
     {
         const string CONFIG_BLOCK_NAME = "z.RefineryDemandBalancer";
-        string[] REFINERY_BLOCK_NAMES = {
-            ". Mothership Refinery A",
-            ". Mothership Refinery B",
-            ". Mothership Refinery C",
-            ". Mothership Refinery D",
-            "Refinery",
-            "Refinery 2",
-            "Refinery 3",
-            "Refinery 4"
-        };
 
         // This file contains your actual script.
         //
@@ -210,6 +201,81 @@ namespace IngameScript
             return weights;
         }
 
+        void ScheduleRefiningOperation (List<InventoryTarget> inventoryTargets, Dictionary<string, decimal> weights, bool includeConnectedGrids = false)
+        {
+            // Get all refineries on this grid.
+            List<IMyRefinery> refineries = new List<IMyRefinery>();
+            GridTerminalSystem.GetBlocksOfType<IMyRefinery>(refineries);
+
+            var containers = new List<IMyCargoContainer>();
+            GridTerminalSystem.GetBlocksOfType(containers);
+            if (containers.Count == 0) return;
+
+            // Remove all content from every refinery input.
+            foreach (var refinery in refineries)
+            {
+                for (var i = 0; i < refinery.InputInventory.ItemCount; i++)
+                {
+                    foreach (var container in containers)
+                    {
+                        if (refinery.InputInventory.TransferItemTo(container.GetInventory(), i, stackIfPossible: true))
+                            break;
+                    }
+                }
+            }
+
+            if (!includeConnectedGrids)
+            {
+
+                // Filter to only blocks on the same grid as this programmable block.
+                // i.e. Exclude connected grids.
+                refineries = refineries.Where(refinery => refinery.CubeGrid == Me.CubeGrid).ToList();
+            }
+
+            // Turn the weights into an ordered list of KeyValuePair.
+            List<KeyValuePair<string, decimal>> normalisedList = weights.ToList();
+
+            // Order by descending value.
+            normalisedList.Sort((pair1, pair2) => pair2.Value.CompareTo(pair1.Value));
+            foreach (var pair in normalisedList)
+            {
+                Echo($"{pair.Key}: {pair.Value}");
+            }
+
+            int totalRefineries = refineries.Count();
+            int refineryIndex = 0;
+
+
+            foreach (var kvp in normalisedList)
+            {
+                // For each weighting, establish how many refineries it should be used in.
+                int refineriesToUse = (int)Math.Round(Decimal.ToDouble(kvp.Value) * totalRefineries);
+                if (refineriesToUse < 1)
+                {
+                    // Always go into at least one refinery.
+                    refineriesToUse = 1;
+                }
+
+                Echo($"{kvp.Key}: {refineriesToUse} out of {totalRefineries}");
+
+                while (refineriesToUse > 0)
+                {
+                    double amountPerRefinery = (double)itemAmounts[kvp.Key + "/Ore"] / refineriesToUse;
+
+                    var refinery = refineries[refineryIndex % totalRefineries]; // Loop back around.
+
+                    // Iterate over all containers to put amountPerRefinery in.
+                    foreach (var container in containers)
+                    {
+                        // TODO
+                    }
+
+                    refineryIndex++;
+                    refineriesToUse--;
+                }
+            }
+        }
+
         public Program()
         {
             // The constructor, called only once every session and
@@ -238,6 +304,8 @@ namespace IngameScript
             // needed.
         }
 
+        Dictionary<string, MyFixedPoint> itemAmounts;
+
         public void Main(string argument, UpdateType updateSource)
         {
             inventoryTargetParser.ParseInventoryTargets();
@@ -245,7 +313,7 @@ namespace IngameScript
             // 0 is no ore, 1 means exactly at target.
             var ingotTargetRatios = new Dictionary<string, decimal>();
 
-            var itemAmounts = GetItemAmounts(inventoryTargetParser.InventoryTargets);
+            itemAmounts = GetItemAmounts(inventoryTargetParser.InventoryTargets);
 
             foreach (var inventoryTarget in inventoryTargetParser.InventoryTargets)
             {
@@ -261,26 +329,7 @@ namespace IngameScript
 
             var weights = GetWeights(ingotTargetRatios);
 
-            List<KeyValuePair<string, decimal>> normalisedList = weights.ToList();
-
-            normalisedList.Sort((pair1, pair2) => pair1.Value.CompareTo(pair2.Value));
-
-            foreach(var pair in normalisedList)
-            {
-                Echo($"{pair.Key}: {pair.Value}");
-            }
-
-            // TODO: Make whether to include connected grids an option.
-
-            // Get all refineries on this grid.
-            List<IMyRefinery> refineries = new List<IMyRefinery>();
-            GridTerminalSystem.GetBlocksOfType<IMyRefinery>(refineries);
-            // Filter to only blocks on the same grid as this programmable block.
-            // i.e. Exclude connected grids.
-            refineries = refineries.Where(refinery => refinery.CubeGrid == Me.CubeGrid).ToList();
-
-            // TODO: Actually assign refining operations.
-
+            ScheduleRefiningOperation(inventoryTargetParser.InventoryTargets, weights);
         }
     }
 }
